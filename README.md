@@ -74,7 +74,7 @@ time - timestamps of records in songplays broken down into specific units start_
 
 ## Run etl.py 
 
-First, Fill in AWS acces key (KEY) and secret (SECRET).
+First, Fill in AWS access key and secret key.
 
 Create an AWS S3 bucket.
 Edit dl.cfg: add your S3 bucket name.

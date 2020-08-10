@@ -149,8 +149,9 @@ def process_log_data(spark, input_data_ld, input_data_sd, output_data, run_start
 
     # --- Create and write time_table
     # create timestamp column from original timestamp column
-
-  
+    start_tt = datetime.now()
+    print("Creating timestamp column...")
+    @udf(t.TimestampType())  
     def get_timestamp (ts):
         return datetime.fromtimestamp(ts / 1000.0)
 
@@ -159,7 +160,8 @@ def process_log_data(spark, input_data_ld, input_data_sd, output_data, run_start
 
     # create datetime column from original timestamp column
 
-    
+    print("Creating datetime column...")
+    @udf(t.StringType())    
     def get_datetime(ts):
         return datetime.fromtimestamp(ts / 1000.0).strftime('%Y-%m-%d %H:%M:%S')
 
@@ -316,6 +318,9 @@ def main():
     * songplayes_table -- directory with songplays_table parquet files
                           stored in output_data path.
     """
+    start = datetime.now()
+    run_start_time = datetime.now().strftime('%Y-%m-%d-%H-%M-%S-%f')
+ #   print("\nSTARTED ETL pipeline (to process song_data and log_data) at {}\n".format(start))
 
     spark = create_spark_session()
     
@@ -323,13 +328,13 @@ def main():
     # output_data = ""
 
     # Variables to be used in when data is processed from/to S3.
-    #input_data_sd = config['AWS']['INPUT_DATA_SD']
-    #input_data_ld = config['AWS']['INPUT_DATA_LD']
+    input_data_sd = config['AWS']['INPUT_DATA_SD']
+    input_data_ld = config['AWS']['INPUT_DATA_LD']
     output_data = config['AWS']['OUTPUT_DATA']
 
     # Use LOCAL input_data + output_data paths.
-    input_data_sd = config['LOCAL']['INPUT_DATA_SD_LOCAL']
-    input_data_ld = config['LOCAL']['INPUT_DATA_LD_LOCAL']
+#     input_data_sd = config['LOCAL']['INPUT_DATA_SD_LOCAL']
+#     input_data_ld = config['LOCAL']['INPUT_DATA_LD_LOCAL']
 #     output_data   = config['LOCAL']['OUTPUT_DATA_LOCAL']
 
     # Use AWS input_data + output_data paths.
